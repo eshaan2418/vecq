@@ -1,0 +1,10 @@
+# captured 2026-11-01 01:27
+cpu: Apple M5 Pro
+ncpu: 18
+memsize_bytes: 51539607552 (48 GB)
+ProductName:		macOS
+ProductVersion:		27.0.1
+BuildVersion:		26A434
+Apple clang version 21.0.0 (clang-2100.4.1.1)
+sqlite: 3.54.0
+cmake version 4.4.4

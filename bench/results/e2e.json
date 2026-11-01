@@ -1,0 +1,177 @@
+{
+  "env": {
+    "date": "2026-11-01 01:22:44",
+    "machine": "Apple M5 Pro",
+    "ncpu": 18,
+    "os": "macOS-27.0.1-arm64-arm-64bit",
+    "sqlite": "3.54.0",
+    "compiler": "Apple clang version 21.0.0 (clang-2100.4.1.1)",
+    "rows": 10000000,
+    "csv_bytes": 433726102,
+    "runs": 7,
+    "threads": 9
+  },
+  "sqlite_import_ms": 9251.432250011727,
+  "queries": {
+    "Q1 filter+count": {
+      "sql": "SELECT COUNT(*) FROM t WHERE fare > 20",
+      "sqlite": {
+        "median_ms": 205.808,
+        "min_ms": 205.253,
+        "max_ms": 306.35200000000003,
+        "runs": 7
+      },
+      "vecq neon 9T": {
+        "median_ms": 0.503,
+        "min_ms": 0.489,
+        "max_ms": 0.607,
+        "runs": 7
+      },
+      "vecq neon 1T": {
+        "median_ms": 1.228,
+        "min_ms": 1.208,
+        "max_ms": 1.387,
+        "runs": 7
+      },
+      "vecq scalar 1T": {
+        "median_ms": 1.323,
+        "min_ms": 1.257,
+        "max_ms": 1.454,
+        "runs": 7
+      },
+      "results_match_sqlite": true
+    },
+    "Q2 filter+sum/avg": {
+      "sql": "SELECT SUM(fare), AVG(tip) FROM t WHERE distance > 2.5 AND passenger_count >= 2",
+      "sqlite": {
+        "median_ms": 305.133,
+        "min_ms": 302.71799999999996,
+        "max_ms": 1984.197,
+        "runs": 7
+      },
+      "vecq neon 9T": {
+        "median_ms": 1.725,
+        "min_ms": 1.711,
+        "max_ms": 1.909,
+        "runs": 7
+      },
+      "vecq neon 1T": {
+        "median_ms": 5.196,
+        "min_ms": 5.058,
+        "max_ms": 5.426,
+        "runs": 7
+      },
+      "vecq scalar 1T": {
+        "median_ms": 12.847,
+        "min_ms": 12.784,
+        "max_ms": 13.229,
+        "runs": 7
+      },
+      "results_match_sqlite": true
+    },
+    "Q3 group by (5 groups)": {
+      "sql": "SELECT payment, COUNT(*), AVG(fare) FROM t GROUP BY payment",
+      "sqlite": {
+        "median_ms": 2009.709,
+        "min_ms": 701.168,
+        "max_ms": 2101.2439999999997,
+        "runs": 7
+      },
+      "vecq neon 9T": {
+        "median_ms": 4.669,
+        "min_ms": 4.652,
+        "max_ms": 4.782,
+        "runs": 7
+      },
+      "vecq neon 1T": {
+        "median_ms": 37.513,
+        "min_ms": 37.467,
+        "max_ms": 37.613,
+        "runs": 7
+      },
+      "vecq scalar 1T": {
+        "median_ms": 39.22,
+        "min_ms": 39.135,
+        "max_ms": 39.283,
+        "runs": 7
+      },
+      "results_match_sqlite": true
+    },
+    "Q4 filter+group+top-k": {
+      "sql": "SELECT zone, SUM(tip) FROM t WHERE pickup_hour >= 17 AND pickup_hour < 20 GROUP BY zone ORDER BY SUM(tip) DESC LIMIT 5",
+      "sqlite": {
+        "median_ms": 702.4780000000001,
+        "min_ms": 697.283,
+        "max_ms": 2570.815,
+        "runs": 7
+      },
+      "vecq neon 9T": {
+        "median_ms": 1.386,
+        "min_ms": 1.375,
+        "max_ms": 1.532,
+        "runs": 7
+      },
+      "vecq neon 1T": {
+        "median_ms": 6.27,
+        "min_ms": 6.171,
+        "max_ms": 6.51,
+        "runs": 7
+      },
+      "vecq scalar 1T": {
+        "median_ms": 6.165,
+        "min_ms": 6.04,
+        "max_ms": 6.398,
+        "runs": 7
+      },
+      "results_match_sqlite": true
+    },
+    "Q5 string filter+2-key group": {
+      "sql": "SELECT vendor, pickup_hour, MAX(fare), MIN(distance) FROM t WHERE payment = 'card' GROUP BY vendor, pickup_hour",
+      "sqlite": {
+        "median_ms": 2613.5585,
+        "min_ms": 2547.3599999999997,
+        "max_ms": 2740.7400000000002,
+        "runs": 6
+      },
+      "vecq neon 9T": {
+        "median_ms": 8.108,
+        "min_ms": 8.087,
+        "max_ms": 8.159,
+        "runs": 7
+      },
+      "vecq neon 1T": {
+        "median_ms": 67.418,
+        "min_ms": 67.143,
+        "max_ms": 67.665,
+        "runs": 7
+      },
+      "vecq scalar 1T": {
+        "median_ms": 66.666,
+        "min_ms": 66.545,
+        "max_ms": 67.082,
+        "runs": 7
+      },
+      "results_match_sqlite": true
+    }
+  },
+  "vecq_load_ms": {
+    "vecq neon 9T": {
+      "median_ms": 217.7,
+      "min_ms": 216.7,
+      "max_ms": 248.4,
+      "runs": 5
+    },
+    "vecq neon 1T": {
+      "median_ms": 1197.0,
+      "min_ms": 1191.7,
+      "max_ms": 1207.8,
+      "runs": 5
+    },
+    "vecq scalar 1T": {
+      "median_ms": 1197.6,
+      "min_ms": 1191.9,
+      "max_ms": 1204.9,
+      "runs": 5
+    }
+  }
+}

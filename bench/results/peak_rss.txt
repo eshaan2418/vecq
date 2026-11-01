@@ -1,0 +1,4 @@
+        0.28 real         1.50 user         0.18 sys
+          2027454464  maximum resident set size
+          1594623800  peak memory footprint
+dataset: 10M rows, 433726102 bytes CSV; command: /usr/bin/time -l ./build/vecq --threads 9 bench/data/trips_10000000.csv "SELECT payment, COUNT(*), AVG(fare) FROM t GROUP BY payment"
