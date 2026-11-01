@@ -1,0 +1,9 @@
+build*/
+.cache/
+compile_commands.json
+bench/data/
+*.csv
+!tests/data/*.csv
+!bench/results/*.csv
+.DS_Store
+NOTES.md
