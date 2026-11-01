@@ -8,6 +8,14 @@
 
 #include "vecq/kernels.h"
 
+#ifndef VECQ_HAVE_NEON
+// Portable-only build (e.g. x86-64): the templates below still instantiate
+// the NEON branch, so point it at the scalar kernels and register only those.
+namespace vecq::kernels {
+namespace neon = scalar;
+}  // namespace vecq::kernels
+#endif
+
 using namespace vecq::kernels;
 
 namespace {
@@ -155,6 +163,9 @@ void BM_mask_to_sel(benchmark::State& st) {
 #define VECQ_PAIR(fn)                                                                                 \
   BENCHMARK(fn<false>)->Name(#fn "/scalar")->Arg(4096)->Arg(16 << 20)->Unit(benchmark::kMicrosecond); \
   BENCHMARK(fn<true>)->Name(#fn "/neon")->Arg(4096)->Arg(16 << 20)->Unit(benchmark::kMicrosecond)
+#else
+#define VECQ_PAIR(fn) BENCHMARK(fn<false>)->Name(#fn "/scalar")->Arg(4096)->Arg(16 << 20)->Unit(benchmark::kMicrosecond)
+#endif
 VECQ_PAIR(BM_cmp_i64);
 VECQ_PAIR(BM_cmp_f64);
 VECQ_PAIR(BM_cmp_u32);
@@ -163,6 +174,5 @@ VECQ_PAIR(BM_sum_f64);
 VECQ_PAIR(BM_max_f64);
 VECQ_PAIR(BM_count);
 VECQ_PAIR(BM_mask_to_sel);
-#endif
 
 BENCHMARK_MAIN();
